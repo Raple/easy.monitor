@@ -17,7 +17,46 @@ namespace Easy.Monitor.Application.Application.ServiceStatMinute
             new Model.ServiceStatMinute.StatService().Stat(serviceNames);
         }
 
-        public IEnumerable<FrequencyData> SelectFrequency(string serviceName)
+        /// <summary>
+        /// 统计
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public IEnumerable<ServiceStatMinuteModel> SelectBy(string serviceName, int pageIndex = 1, int pageSize = 100)
+        {           
+            var list = Model.RepositoryRegistry.ServiceStatMinute.SelectBy(new Model.ServiceStatMinute.Query()
+            {
+                ServiceName = serviceName,               
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            });
+
+            return list.Select(m => new ServiceStatMinuteModel()
+            {
+                AverageRequestResponseTime=m.AverageRequestResponseTime,
+                ErrorResponseFrquency=m.ErrorResponseFrquency,
+                RequestFrequency = m.RequestFrequency,
+                ServiceName = m.ServiceName,
+                ResponseFrequency = m.ResponseFrequency,
+                MaxResponseTime = m.MaxResponseTime,
+                MinResponseTime = m.MinResponseTime,
+                AverageResponseTime = m.AverageResponseTime,
+                TotalResponseTime = m.TotalResponseTime,               
+                StatTime = m.StatTime.ToString("yyyy-MM-dd HH:mm:ss")
+            });
+        }
+
+
+        /// <summary>
+        /// 图表
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public IEnumerable<FrequencyData> SelectFrequency(string serviceName, int pageIndex = 1, int pageSize = 100)
         {
             var curentDateTime = DateTime.Now;
 
@@ -25,7 +64,9 @@ namespace Easy.Monitor.Application.Application.ServiceStatMinute
             {
                 ServiceName = serviceName,
                 StatTimeStart = curentDateTime.AddMinutes(-30),
-                StatTimeEnd = curentDateTime
+                StatTimeEnd = curentDateTime,
+                PageIndex=pageIndex,
+                PageSize=pageSize
             });
 
             list = new StatDataFillService().Fill(curentDateTime, list);

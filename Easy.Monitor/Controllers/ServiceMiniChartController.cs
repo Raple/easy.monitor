@@ -18,5 +18,12 @@ namespace Easy.Monitor.Controllers
             var result = Application.ApplicationRegistry.ServiceStatMinute.SelectFrequency(serviceName);
             return Json(result,JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult ServiceStatistics(string serviceName)
+        {
+            ViewBag.ServiceName = serviceName;
+            var result = Application.ApplicationRegistry.ServiceStatMinute.SelectBy(serviceName);
+            return View(result);
+        }
     }
 }

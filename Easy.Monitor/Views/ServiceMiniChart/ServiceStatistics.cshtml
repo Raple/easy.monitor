@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Easy.Monitor.Application.Models.ServiceStatMinute.ServiceStatMinuteModel>
+@{
+    ViewBag.Title = "服务统计";
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            @ViewBag.ServiceName
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="\"><i class="fa fa-files-o"></i> Home</a></li>
+            <li class="active">@ViewBag.ServiceName</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title"></h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>AverageTime</th>
+                                    <th>ErrorResponseFrquency</th>
+                                    <th>RequestFrequency</th>                                
+                                    <th>ResponseFrequency</th>
+                                    <th>MaxResponseTime</th>
+                                    <th>MinResponseTime</th>
+                                    <th>AverageResponseTime</th>
+                                    <th>TotalResponseTime</th>
+                                    <th>StatTime</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var m in Model)
+                               {
+                                <tr>
+                                    <td>@m.AverageRequestResponseTime</td>
+                                    <td>@m.ErrorResponseFrquency</td>
+                                    <td>@m.RequestFrequency</td>                                  
+                                    <td>@m.ResponseFrequency</td>
+                                    <td>@m.MaxResponseTime</td>
+                                    <td>@m.MinResponseTime</td>
+                                    <td>@m.AverageResponseTime</td>
+                                    <td>@m.TotalResponseTime</td>
+                                    <td>@m.StatTime</td>
+                                </tr>
+                                }
+                            </tbody>
+                            @*<tfoot>
+                                <tr>
+                                    <th>Rendering engine</th>
+                                    <th>Browser</th>
+                                    <th>Platform(s)</th>
+                                    <th>Engine version</th>
+                                    <th>CSS grade</th>
+                                </tr>
+                            </tfoot>*@
+                        </table>
+                    </div><!-- /.box-body -->
+                </div><!-- /.box -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </section><!-- /.content -->  
+    
+    <script src="~/Scripts/jQuery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.min.js"></script>
+    <script src="~/Scripts/fastclick.min.js"></script>
+    <script src="~/Scripts/app.min.js"></script>
+    <script src="~/Scripts/demo.js"></script>
+  
+    <!-- page script -->
+    <script>
+        $(function () {           
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false
+            });
+        });
+    </script>    

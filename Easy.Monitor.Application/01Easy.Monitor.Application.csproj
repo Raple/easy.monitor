@@ -72,6 +72,7 @@
     <Compile Include="Application\Node\NodeApplication.cs" />
     <Compile Include="Models\Node\Node.cs" />
     <Compile Include="Models\ServiceStatMinute\FrequencyData.cs" />
+    <Compile Include="Models\ServiceStatMinute\ServiceStatMinuteModel.cs" />
     <Compile Include="Models\StatMetaData\StatMetaDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\DateHelper.cs" />
