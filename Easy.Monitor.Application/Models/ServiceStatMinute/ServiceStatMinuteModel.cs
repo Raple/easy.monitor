@@ -48,5 +48,10 @@ namespace Easy.Monitor.Application.Models.ServiceStatMinute
         /// 统计时间
         /// </summary>
         public string StatTime;
+
+        /// <summary>
+        /// 总数据条数
+        /// </summary>
+        public int TotalCount;
     }
 }

@@ -3,7 +3,15 @@
     ViewBag.Title = "服务统计";
     Layout = "~/Views/Shared/MainLayout.cshtml";
 }
+
+<script src="~/Scripts/jQuery-2.1.4.min.js"></script>
+@*<script src="~/Scripts/bootstrap.min.js"></script>*@
+<script src="~/Scripts/jquery.bootpag.min.js"></script>
+<script src="~/Scripts/jquery.bootpag.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
 <div class="content-wrapper">
+    <input type="hidden" id="hiddenCount" value="@ViewBag.Count" />
     <section class="content-header">
         <h1>
             @ViewBag.ServiceName
@@ -35,57 +43,48 @@
                                     <th>StatTime</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="content">
                                 @foreach (var m in Model)
-                               {
-                                <tr>
-                                    <td>@m.AverageRequestResponseTime</td>
-                                    <td>@m.ErrorResponseFrquency</td>
-                                    <td>@m.RequestFrequency</td>                                  
-                                    <td>@m.ResponseFrequency</td>
-                                    <td>@m.MaxResponseTime</td>
-                                    <td>@m.MinResponseTime</td>
-                                    <td>@m.AverageResponseTime</td>
-                                    <td>@m.TotalResponseTime</td>
-                                    <td>@m.StatTime</td>
-                                </tr>
+                                {
+                                    <tr>
+                                        <td>@m.AverageRequestResponseTime</td>
+                                        <td>@m.ErrorResponseFrquency</td>
+                                        <td>@m.RequestFrequency</td>
+                                        <td>@m.ResponseFrequency</td>
+                                        <td>@m.MaxResponseTime</td>
+                                        <td>@m.MinResponseTime</td>
+                                        <td>@m.AverageResponseTime</td>
+                                        <td>@m.TotalResponseTime</td>
+                                        <td>@m.StatTime</td>
+                                    </tr>
                                 }
-                            </tbody>
-                            @*<tfoot>
-                                <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
-                                </tr>
-                            </tfoot>*@
+                            </tbody>                          
                         </table>
+                        <div id="page-selection"></div>
                     </div><!-- /.box-body -->
                 </div><!-- /.box -->
             </div><!-- /.col -->
         </div><!-- /.row -->
     </section><!-- /.content -->  
-    
-    <script src="~/Scripts/jQuery-2.1.4.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/jquery.dataTables.min.js"></script>
-    <script src="~/Scripts/dataTables.bootstrap.min.js"></script>
-    <script src="~/Scripts/jquery.slimscroll.min.js"></script>
-    <script src="~/Scripts/fastclick.min.js"></script>
-    <script src="~/Scripts/app.min.js"></script>
-    <script src="~/Scripts/demo.js"></script>
-  
-    <!-- page script -->
     <script>
-        $(function () {           
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false
-            });
-        });
-    </script>    
+        //init bootpag           
+    $('#page-selection').bootpag({
+        total: $("#hiddenCount").val(),
+        maxVisible: 10
+    }).on("page", function (event, num) {        
+        $.ajax({
+            url: "/ServiceMiniChart/GetServiceStatistics?pageIndex=" + num + "&serviceName=@ViewBag.ServiceName",
+            success: function (data) {              
+                var htmlTemp = "";
+                var count = 20;
+                $.each(data, function (i, n) {
+                    htmlTemp += '<tr><td>' + n.AverageRequestResponseTime + '</td><td>' + n.ErrorResponseFrquency + '</td><td>' + n.RequestFrequency + '</td><td>' + n.ResponseFrequency + '</td><td>' + n.MaxResponseTime + '</td><td>' + n.MinResponseTime + '</td><td>' + n.AverageResponseTime + '</td><td>' + n.TotalResponseTime + '</td><td>' + n.StatTime + '</td></tr>';                    
+                    count = n.TotalCount;
+                });
+                $("#content").html(htmlTemp);             
+                $(this).bootpag({ total: (count/50), page: num, maxVisible: 10 });
+            }
+        });        
+    });
+</script>   
+   

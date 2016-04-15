@@ -24,7 +24,7 @@ namespace Easy.Monitor.Application.Application.ServiceStatMinute
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public IEnumerable<ServiceStatMinuteModel> SelectBy(string serviceName, int pageIndex = 1, int pageSize = 100)
+        public IEnumerable<ServiceStatMinuteModel> SelectBy(string serviceName, int pageIndex = 1, int pageSize = 50)
         {           
             var list = Model.RepositoryRegistry.ServiceStatMinute.SelectBy(new Model.ServiceStatMinute.Query()
             {
@@ -32,6 +32,7 @@ namespace Easy.Monitor.Application.Application.ServiceStatMinute
                 PageIndex = pageIndex,
                 PageSize = pageSize
             });
+            int count = Model.RepositoryRegistry.ServiceStatMinute.SelectCount(serviceName);
 
             return list.Select(m => new ServiceStatMinuteModel()
             {
@@ -44,10 +45,21 @@ namespace Easy.Monitor.Application.Application.ServiceStatMinute
                 MinResponseTime = m.MinResponseTime,
                 AverageResponseTime = m.AverageResponseTime,
                 TotalResponseTime = m.TotalResponseTime,               
-                StatTime = m.StatTime.ToString("yyyy-MM-dd HH:mm:ss")
+                StatTime = m.StatTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                TotalCount=count
             });
         }
 
+        /// <summary>
+        /// 获取服务总条数
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
+        public int SelectCount(string serviceName)
+        {
+            int count = Model.RepositoryRegistry.ServiceStatMinute.SelectCount(serviceName);
+            return count;
+        }
 
         /// <summary>
         /// 图表

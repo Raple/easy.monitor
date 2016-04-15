@@ -57,6 +57,11 @@ namespace Easy.Monitor.Infrastructure.Repository.ServiceStatMinute
             return string.Join(" ", BaseSelectSql(), WhereSql(query), "ORDER BY stat_time ASC", "LIMIT @Limit OFFSET @Offset;");
         }
 
+        public static string SelectCount(string serviceName)
+        {
+            return "select count(*) as num from monitor_service_min where service_name='" + serviceName + "'; ";
+        }
+
         public static string RemoveAll()
         {
             return "delete from monitor_service_min";

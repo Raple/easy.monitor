@@ -57,5 +57,16 @@ namespace Easy.Monitor.Infrastructure.Repository.ServiceStatMinute
                 return conn.Query<Model.ServiceStatMinute.ServiceStatMinute>(sql, query);
             }
         }
+
+        public int SelectCount(string serviceName)
+        {
+            using (var conn = Database.OpenMonitorDatabase())
+            {
+                var sql = Sql.SelectCount(serviceName);
+                var temp=conn.ExecuteScalar(sql);
+
+                return (temp == null ? 0 : Convert.ToInt32(temp));
+            }
+        }
     }
 }

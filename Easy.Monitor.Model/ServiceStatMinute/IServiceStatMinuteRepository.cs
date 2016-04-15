@@ -18,5 +18,12 @@ namespace Easy.Monitor.Model.ServiceStatMinute
         /// <returns></returns>
         DateTime? FindMaxStatTime(string serviceName);
         void RemoveAll();
+
+        /// <summary>
+        /// 查询总条数
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
+        int SelectCount(string serviceName);
     }
 }
